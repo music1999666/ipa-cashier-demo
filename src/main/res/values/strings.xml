@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">收单集成测试</string>
+    <string name="get_prepayid_fail" formatted="false">获取支付订单失败，原因:%s</string>
+    <string name="get_prepayid_succ">获取支付订单成功</string>
+    <string name="no_sandbox_specified">需要指定沙盒域名</string>
+    <string name="no_billnumber_specified">需要指定订单编号</string>
+</resources>
