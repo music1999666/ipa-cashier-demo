@@ -169,7 +169,7 @@ public class MainActivity extends Activity {
                     if(!result.optString("error","").equals(""))
                         return content;
                     result = result.optJSONObject("data");
-                    String status = result.optString("sessionstatus", "");
+                    String status = result.optString("sessionstatus", "");	// 等待|成功|关闭|退款
                     bContinue = status.equals("等待");
                     if(bContinue)
                         Thread.sleep(5000);
