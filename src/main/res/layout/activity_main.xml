@@ -206,6 +206,51 @@
             </RadioGroup>
 
             <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_marginLeft="3dip"
+                android:layout_marginRight="3dip"
+                android:background="@color/white"
+                android:visibility="visible" />
+            <RadioGroup
+                android:id="@+id/methods"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:textColor="@color/black">
+
+                <RadioButton
+                    android:id="@+id/h5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="H5" />
+
+                <RadioButton
+                    android:id="@+id/app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="APP" />
+
+                <RadioButton
+                    android:id="@+id/qr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="扫码" />
+
+            </RadioGroup>
+
+
+            <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="1dip"

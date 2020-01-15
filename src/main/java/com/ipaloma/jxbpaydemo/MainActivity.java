@@ -25,7 +25,6 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -45,6 +44,8 @@ public class MainActivity extends Activity {
     private RadioGroup mChannel;
     private EditText mBillNumber;
     private PaymentStatusTask mPaymentStatusTask;
+    private RadioGroup mMethod;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +56,10 @@ public class MainActivity extends Activity {
         mSandbox = (EditText) findViewById(R.id.sandbox_value);
         // 订单编号
         mBillNumber = (EditText) findViewById(R.id.billnumber_value);
-        //支付方式选择
+        //支付渠道选择
         mChannel = (RadioGroup) findViewById(R.id.channels);
+        //支付方式选择
+        mMethod = (RadioGroup) findViewById(R.id.methods);
 
         // 支付按钮
         mCheckoutBtn = (Button) findViewById(R.id.checkout);
@@ -74,8 +77,8 @@ public class MainActivity extends Activity {
                     Toast.makeText(mActivity, R.string.no_billnumber_specified, Toast.LENGTH_LONG).show();
                     return;
                 }
-                int checkedId = mChannel.getCheckedRadioButtonId();
-                //mLoadActivityIntent = getPackageManager().getLaunchIntentForPackage("com.ipaloma.jxbpay");
+                int channelId = mChannel.getCheckedRadioButtonId();
+                int methodId = mMethod.getCheckedRadioButtonId();
                 mLoadActivityIntent = new Intent();
                 mLoadActivityIntent.setComponent(new ComponentName("com.ipaloma.jxbpay", "com.ipaloma.jxbpay.MainActivity"));
 
@@ -84,7 +87,8 @@ public class MainActivity extends Activity {
                 mLoadActivityIntent.putExtra("title", "经销宝收银台");	// 定义收银台界面的title
                 mLoadActivityIntent.putExtra("billnumber", billnumber);	// 订单编号
                 mLoadActivityIntent.putExtra("notifyurl", "http://xxx?orderid="+billnumber);	// 支付完成后，将会调用此url（http post）通知结果(json格式)
-                mLoadActivityIntent.putExtra("env",  checkedId == R.id.dev ? "dev" : checkedId == R.id.demo ? "demo" : "");
+                mLoadActivityIntent.putExtra("env",  channelId == R.id.dev ? "dev" : channelId == R.id.demo ? "demo" : "");
+                mLoadActivityIntent.putExtra("method",  methodId == R.id.h5 ? "h5pay" : channelId == R.id.app ? "apppay" : channelId == R.id.qr ? "qrpay" : "qrpay");
 
                  startActivityForResult(mLoadActivityIntent, payment_requestcode);
 
