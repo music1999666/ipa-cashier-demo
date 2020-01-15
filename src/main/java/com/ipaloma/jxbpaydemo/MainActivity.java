@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
                 mLoadActivityIntent.putExtra("billnumber", billnumber);	// 订单编号
                 mLoadActivityIntent.putExtra("notifyurl", "http://xxx?orderid="+billnumber);	// 支付完成后，将会调用此url（http post）通知结果(json格式)
                 mLoadActivityIntent.putExtra("env",  channelId == R.id.dev ? "dev" : channelId == R.id.demo ? "demo" : "");
-                mLoadActivityIntent.putExtra("method",  methodId == R.id.h5 ? "h5pay" : channelId == R.id.app ? "apppay" : channelId == R.id.qr ? "qrpay" : "qrpay");
+                mLoadActivityIntent.putExtra("method",  methodId == R.id.h5 ? "h5pay" : methodId == R.id.app ? "apppay" : methodId == R.id.qr ? "qrpay" : "qrpay");
 
                  startActivityForResult(mLoadActivityIntent, payment_requestcode);
 
