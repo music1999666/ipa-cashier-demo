@@ -25,6 +25,7 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -84,11 +85,42 @@ public class MainActivity extends Activity {
                     mLoadActivityIntent.setComponent(new ComponentName("com.ipaloma.jxbpay", "com.ipaloma.jxbpay.JXBCashierActivity"));
                 else
                     mLoadActivityIntent.setComponent(new ComponentName("com.ipaloma.jxbpay", "com.ipaloma.jxbpay.MainActivity"));
+                
                 EditText amountText = (EditText)mActivity.findViewById (R.id.amount_value);
                 String amount = amountText.getText().toString();
                 double value = Double.parseDouble(amount.replace("￥",""));
                 if(value == 0)
                     return;
+
+                // 测试经销宝收银台模式
+                JSONObject json = new JSONObject();
+                try {
+
+                    json.putOpt("scene", "结算");	// 定义收银台界面的title
+
+                    json.putOpt("sandbox", sandbox);	// 注册商户的二级域名
+                    json.putOpt("distributorid", "1235");   // 商户guid
+
+                    json.putOpt("userid", "销售冠军id");
+                    json.putOpt("username", "销售冠军");
+
+                    json.putOpt("customername", "麦当劳");
+                    json.putOpt("customerid", "麦当劳id");
+
+                    json.putOpt("billid", billnumber);	// 订单guid
+                    json.putOpt("billclass", "tblbillsaleonsite");  // 主单据类型
+                    json.putOpt("billdata", "bill json data string"); // 订单数据
+                    json.putOpt("count", value);				// 支付金额
+
+                    json.putOpt("notifyurl", "http://xxx?orderid="+billnumber);	// 支付完成后，将会调用此url（http post）通知结果(json格式)
+                    json.putOpt("env",  channelId == R.id.dev ? "dev" : channelId == R.id.demo ? "demo" : "");  // 测试专用，正式环境无需填写
+                    Log.d(TAG, json.toString());
+                    mLoadActivityIntent.putExtra("parameter", json.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // 测试通用模式
                 mLoadActivityIntent.putExtra("amount", value);				// 支付金额
                 mLoadActivityIntent.putExtra("sandbox", sandbox);	// 注册商户的二级域名
                 mLoadActivityIntent.putExtra("title", "经销宝收银台");	// 定义收银台界面的title
