@@ -80,9 +80,16 @@ public class MainActivity extends Activity {
                 int channelId = mChannel.getCheckedRadioButtonId();
                 int methodId = mMethod.getCheckedRadioButtonId();
                 mLoadActivityIntent = new Intent();
-                mLoadActivityIntent.setComponent(new ComponentName("com.ipaloma.jxbpay", "com.ipaloma.jxbpay.MainActivity"));
-
-                mLoadActivityIntent.putExtra("amount", 0.01);				// 支付金额
+                if(methodId == R.id.qr)
+                    mLoadActivityIntent.setComponent(new ComponentName("com.ipaloma.jxbpay", "com.ipaloma.jxbpay.JXBCashierActivity"));
+                else
+                    mLoadActivityIntent.setComponent(new ComponentName("com.ipaloma.jxbpay", "com.ipaloma.jxbpay.MainActivity"));
+                EditText amountText = (EditText)mActivity.findViewById (R.id.amount_value);
+                String amount = amountText.getText().toString();
+                double value = Double.parseDouble(amount.replace("￥",""));
+                if(value == 0)
+                    return;
+                mLoadActivityIntent.putExtra("amount", value);				// 支付金额
                 mLoadActivityIntent.putExtra("sandbox", sandbox);	// 注册商户的二级域名
                 mLoadActivityIntent.putExtra("title", "经销宝收银台");	// 定义收银台界面的title
                 mLoadActivityIntent.putExtra("billnumber", billnumber);	// 订单编号
@@ -122,8 +129,8 @@ public class MainActivity extends Activity {
                         && (mPaymentStatusTask.getStatus() == AsyncTask.Status.RUNNING  || mPaymentStatusTask.getStatus() == AsyncTask.Status.PENDING))
                     mPaymentStatusTask.cancel(true);
 
-                mPaymentStatusTask = new PaymentStatusTask(resulturl, 60 * 1000);
-                mPaymentStatusTask.execute();
+                //mPaymentStatusTask = new PaymentStatusTask(resulturl, 60 * 1000);
+                //mPaymentStatusTask.execute();
             }
         }
     }
@@ -173,6 +180,8 @@ public class MainActivity extends Activity {
                     if(!result.optString("error","").equals(""))
                         return content;
                     result = result.optJSONObject("data");
+                    if(result == null)
+                        return null;
                     String status = result.optString("sessionstatus", "");	// 等待|成功|关闭|退款
                     bContinue = status.equals("等待");
                     if(bContinue)
